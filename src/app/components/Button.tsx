@@ -10,7 +10,7 @@ export default function Button({ title, onPress }: ButtonProps) {
         <button
             onClick={onPress}
             type="submit"
-            className="bg-gradient-to-b from-gray-700 to-gray-900 font-medium p-2 md:p-4 text-white uppercase w-full"
+            className="bg-gradient-to-b cursor-pointer from-gray-700 to-gray-900 font-medium p-2 md:p-4 text-white uppercase w-full"
         >
             {title}
         </button>

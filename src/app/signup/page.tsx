@@ -9,20 +9,52 @@ import { MdEmail } from "react-icons/md";
 import { IoLockClosedSharp } from "react-icons/io5";
 import SelectFormInput from '../components/SelectFormInput';
 import { RiAdminFill } from "react-icons/ri";
-
+import {createData} from '../composable/useCreateData'
 
 
 function SignUp() {
 
+    const [userName, setUserName] = useState("")
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [selectedValue, setSelectedValue] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+
 
     const handleLogin = async (e: any) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        console.log(email, password)
+        if (password !== confirmPassword) {
+            alert("Password must be the same");
+            return;
+        }
+
+        const data = {
+            userName,
+            email,
+            password,
+            roles: selectedValue,
+        };
+
+        try {
+           await createData("/api/signup", data);
+            alert("User created successfully");
+            handleClear();
+ 
+        } catch (error) {
+            console.error("Unexpected error:", error);
+            alert("Something went wrong");
+        }
+    };
+
+    const handleClear = () => {
+        setUserName("")
+        setEmail("")
+        setPassword("")
+        setSelectedValue("")
+        setConfirmPassword("")
     }
+
 
     return (
         <div className="bg-gray-50 h-screen overflow-hidden flex items-center justify-center">
@@ -40,8 +72,8 @@ function SignUp() {
                             type="text"
                             placeholder="អ្នកប្រើប្រាស់"
 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
                         />
                     </div>
                     <div className="relative">
@@ -57,7 +89,7 @@ function SignUp() {
                     </div>
 
                     <div className='relative'>
-                    <RiAdminFill size={24} className=' absolute top-1/2 left-3 transform -translate-y-1/2' />
+                        <RiAdminFill size={24} className=' absolute top-1/2 left-3 transform -translate-y-1/2' />
 
                         <SelectFormInput
                             value={selectedValue}
@@ -90,8 +122,8 @@ function SignUp() {
                             type="password"
                             placeholder="បញ្ជាក់ពាក្យសម្ងាត់"
 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>
 

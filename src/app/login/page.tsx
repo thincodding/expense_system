@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState,} from 'react';
+import React, { useEffect, useState, } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Button from '../components/Button';
@@ -8,7 +8,7 @@ import TextFormInput from '../components/TextFormInput';
 import { MdEmail } from "react-icons/md";
 import { IoLockClosedSharp } from "react-icons/io5";
 
-
+import { createData } from '../composable/useCreateData'
 
 
 
@@ -18,15 +18,45 @@ function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
+
+//if user has token cannot to login
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/"); 
+    }
+  }, [router]);
+
+
+  // Example login handler
   const handleLogin = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    console.log(email, password)
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    router.push('/sidebar')
+      const result = await response.json();
 
+      if (response.ok && result.token) {
+        localStorage.setItem('token', result.token);
+        localStorage.setItem("userName", result.user.userName);
+        console.log("admin is", result.userName, "and token", result.token)
+        alert('Login successful!');
+        
+        router.push('/');
+      } else {
+        alert(result.error || 'Login failed');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong');
+    }
+  };
 
-  }
 
   return (
     <div className="bg-gray-50 h-screen overflow-hidden flex items-center justify-center">

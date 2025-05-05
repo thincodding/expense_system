@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { LuUser } from "react-icons/lu";
 import { usePathname } from 'next/navigation';
 import { FaAnglesRight } from "react-icons/fa6";
 
 function Navbar() {
+
+    const [userName, setUserName] = useState<string | null>(null);
+
+    //retreive data
+    useEffect(() => {
+
+        const storedUserName = localStorage.getItem("userName");
+        if (storedUserName) {
+          setUserName(storedUserName); 
+        }
+      }, []);
 
     const pathname = usePathname()
     const displayPath =
@@ -55,8 +66,8 @@ function Navbar() {
                     </div>
 
                     <div className='mr-3'>
-                        <div>
-                            Sokthin
+                        <div className='capitalize'>
+                            {userName}
                         </div>
                     </div>
 

@@ -1,19 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FaHome, FaCog, FaMoneyCheck } from 'react-icons/fa'; // Import React Icons
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CgChevronDoubleUp } from "react-icons/cg";
 import { FaUsersGear, FaMoneyBillWave } from "react-icons/fa6";
 import { TbReportSearch, TbCreditCardPay } from "react-icons/tb";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 
 
 
 const SideBar: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
+
+  //if user no token back to login
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+    }
+  }, []);
+
 
   const navItem = (href: string, label: string, Icon: React.ComponentType<any>) => (
     <Link
@@ -26,9 +37,19 @@ const SideBar: React.FC = () => {
     </Link>
   );
 
+  const handleLogout = () => {
+    if (window.confirm("Are you sure logout?")) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userName");
+
+      router.push("/login");
+      
+    }
+  }
+
   return (
-   
-   
+
+    <div>
       <div className="w-64 h-screen bg-gray-800 text-white p-6 flex flex-col">
 
         <h2 className="text-lg font-bold mb-10 flex gap-1">
@@ -50,9 +71,17 @@ const SideBar: React.FC = () => {
           {navItem('/settings', 'ការកំណត់', FaCog)}
         </nav>
       </div>
-    
 
-    
+
+      <div className="fixed bottom-4 right-4">
+        <button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 cursor-pointer text-white font-bold py-2 px-4 rounded-full shadow-lg flex items-center gap-2">
+          <RiLogoutBoxRLine />
+          <span>ចាកចេញ</span>
+        </button>
+      </div>
+
+    </div>
+
   );
 };
 
