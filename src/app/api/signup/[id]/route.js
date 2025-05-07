@@ -45,7 +45,7 @@ export async function PUT(req, { params }) {
         const updateData = { userName, email, password, roles };
 
         const updatedUser = await Users.findByIdAndUpdate(id, updateData, {
-            new: true // This option returns the updated document
+            new: true 
         });
 
         if (!updatedUser) {

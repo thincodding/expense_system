@@ -20,7 +20,9 @@ function Navbar() {
     const pathname = usePathname()
     const displayPath =
         pathname === '/' ? 'ផ្ទាំងគ្រប់គ្រង' :
+        pathname === '/bankType' ? 'ប្រភេទគណនី' :
         pathname === '/settings' ? 'ការកំណត់' :
+
         pathname.replace('/', '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
     return (

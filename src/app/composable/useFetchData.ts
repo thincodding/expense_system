@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 interface ApiResponse {
   pro: any[];
+  bankType: any[]
 }
 
 export function useApi(url: string){
