@@ -7,6 +7,7 @@ import SaveButton from '../SaveButton';
 import CloseButton from '../CloseButton';
 import { createData } from '@/app/composable/useCreateData';
 import { updateData } from '@/app/composable/useUpdateData';
+import { useApi } from '@/app/composable/useFetchData';
 
 
 interface DataItem {
@@ -16,14 +17,18 @@ interface DataItem {
 }
 interface CloseButtonProps {
   handleClose: () => void,
-  dataItem: DataItem | null
+  dataItem: DataItem | null,
+  refetch: () => void
 }
 
-function AddBankTypeModal({ handleClose, dataItem }: CloseButtonProps) {
+function AddBankTypeModal({ handleClose, dataItem, refetch }: CloseButtonProps) {
 
   const [bankTypeName, setBankTypeName] = useState("")
   const [note, setNote] = useState("")
   const [userID, setUserId] = useState<string | null>(null)
+
+
+  // const { data: bankTypes, useFetchData } = useApi('/api/bankType')
 
   //retreive data
   useEffect(() => {
@@ -56,14 +61,20 @@ function AddBankTypeModal({ handleClose, dataItem }: CloseButtonProps) {
       if (!dataItem) {
         await createData('/api/bankType', data)
         alert("បានបង្កើតដោយជោគជ័យ")
+        // await useFetchData();\
+        await refetch()
         handleClear();
         handleClose();
+
       }
-      else{
+      else {
         await updateData(`/api/bankType/${dataItem?._id}`, data)
         alert("បានកែប្រែដោយជោគជ័យ")
+        // await useFetchData();
+        await refetch();
         handleClear();
         handleClose();
+
       }
     }
     catch (err) {
