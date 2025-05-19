@@ -10,11 +10,13 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { deleteData } from '../composable/useDeleteData';  // Assuming this is defined elsewhere
 import { FaEdit } from "react-icons/fa";
 import Pagination from '../components/Pagination';
+import TextFormInput from '../components/TextFormInput';
+import { BiSearch } from 'react-icons/bi';
 
 export interface BankType {
     _id: string;
-    bankTypeName: string; 
-    note: string;          
+    bankTypeName: string;
+    note: string;
     userID: string;
     createdAt: string;
     updatedAt?: string;
@@ -26,11 +28,15 @@ function BankType() {
 
     const [page, setPage] = useState(1);
     const limit = 8;
+    const [searchTerm, setSearchTerm] = useState('');
 
     // Use `useApi` to fetch bank type data
     const { data, loading, error, refetch } = useApi<{ results: BankType[]; totalPages: number }>(
         `/api/bankType?page=${page}&limit=${limit}`
     );
+    // const { data, loading, error, refetch } = useApi<{ results: BankType[], totalPages: number }>(
+    //     `/api/bankType?page=${page}&limit=${limit}&search=${encodeURIComponent(searchTerm)}`
+    // );
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
@@ -38,7 +44,7 @@ function BankType() {
 
     const handleAddNew = () => {
         setIsModal(true);
-        setDataItem(null); 
+        setDataItem(null);
     };
 
     const handleClose = () => {
@@ -59,14 +65,39 @@ function BankType() {
 
     const handleUpdate = (item: BankType) => {
         setIsModal(true);
-        setDataItem(item);  
+        setDataItem(item);
     };
+
+    //handle search
+    // const handleFilterSearch = () => {
+    //     return data?.results.filter((item) => item.bankTypeName.toLowerCase().includes(searchTerm.toLowerCase()));
+    // }
+
+    const filtered = data?.results.filter((item) =>
+        item.bankTypeName.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
+
 
     return (
         <div>
             <Navbar />
             <div className="p-4 mt-5 flex justify-end  ">
                 <AddNewButton onPress={handleAddNew} title="បន្ថែមថ្មី" />
+            </div>
+
+
+            <div className='flex justify-end pr-5 relative'>
+                <BiSearch size={24} className=' absolute top-1/2 right-56 transform -translate-y-1/2' />
+
+                <TextFormInput
+                    value={searchTerm}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setPage(1);
+                    }}
+                    placeholder="ស្វែងរក..."
+                />
+
             </div>
 
             <div className="flex flex-col">
@@ -83,7 +114,7 @@ function BankType() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data?.results?.map((item) => (
+                                    {filtered?.map((item) => (
                                         <tr key={item._id} className="bg-white border-b border-b-gray-300">
                                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                 {item.bankTypeName}

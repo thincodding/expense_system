@@ -20,6 +20,7 @@ function Navbar() {
     const pathname = usePathname()
     const displayPath =
         pathname === '/' ? 'ផ្ទាំងគ្រប់គ្រង' :
+        pathname === '/bank' ? 'គណនី' :
         pathname === '/bankType' ? 'ប្រភេទគណនី' :
         pathname === '/settings' ? 'ការកំណត់' :
 
