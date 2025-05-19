@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { LuUser } from "react-icons/lu";
