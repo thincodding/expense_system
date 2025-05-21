@@ -81,7 +81,11 @@ function BankType() {
     return (
         <div>
             <Navbar />
-            <div className="p-4 mt-5 flex justify-end  ">
+
+            <div className="p-4 mt-5 flex justify-between  ">
+                <div className=''>
+                    <h1 className='text-2xl font-bold'>ប្រភេទគណនី</h1>
+                </div>
                 <AddNewButton onPress={handleAddNew} title="បន្ថែមថ្មី" />
             </div>
 

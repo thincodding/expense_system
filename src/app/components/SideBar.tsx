@@ -64,7 +64,7 @@ const SideBar: React.FC = () => {
           {navItem('/settings', 'រូបិយប័ណ្ណ', FaMoneyBillWave)}
           {navItem('/bank', 'គណនី', FaMoneyCheck)}
           {navItem('/bankType', 'ប្រភេទគណនី', BiSolidCategoryAlt)}
-          {navItem('/៤', 'ដាក់លុយ', FaMoneyBillTransfer)}
+          {navItem('/deposit', 'ដាក់លុយ', FaMoneyBillTransfer)}
           <p className='text-xs text-gray-400 my-2'>អ្នកប្រើប្រាស់និងរបាយការណ៍</p>
           {navItem('/signup', 'អ្នកប្រើប្រាស់', FaUsersGear)}
           {navItem('/g', 'របាយការណ៍', TbReportSearch)}

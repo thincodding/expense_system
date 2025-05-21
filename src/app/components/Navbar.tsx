@@ -24,8 +24,8 @@ function Navbar() {
         pathname === '/' ? 'ផ្ទាំងគ្រប់គ្រង' :
         pathname === '/bank' ? 'គណនី' :
         pathname === '/bankType' ? 'ប្រភេទគណនី' :
+        pathname === '/deposit' ? 'ដាក់លុយ' :
         pathname === '/settings' ? 'ការកំណត់' :
-
         pathname.replace('/', '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
     return (

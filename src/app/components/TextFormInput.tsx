@@ -5,7 +5,7 @@ import React from 'react';
 interface TextFormInputProps {
     type?: string;
     placeholder: string;
-    value?: string;
+    value?: string | number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     id?: string;
     name?: string;

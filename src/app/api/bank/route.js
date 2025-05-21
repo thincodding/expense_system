@@ -3,12 +3,29 @@
 import { NextResponse } from "next/server";
 import connectDB from "../../config/config";
 import Banks from "../../../../models/Banks";
+import { usePagination } from "../../composable/usePagination";
 
 
-export async function GET() {
-    await connectDB();
-    const data = await Banks.find();
-    return NextResponse.json({ data });
+export async function GET(req) {
+
+  // await connectDB();
+  // const bankType = await BankTypes.find().sort({ createdAt: -1 });
+  // return NextResponse.json({ bankType });
+
+  await connectDB();
+
+  const { searchParams } = new URL(req.url);
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '10');
+
+  const data = await usePagination(Banks, {
+    page,
+    limit,
+    sort: { createdAt: -1 },
+  });
+
+  return NextResponse.json(data);
+
 }
 
 export async function POST(req) {

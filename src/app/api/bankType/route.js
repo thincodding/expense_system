@@ -7,27 +7,30 @@ import { usePagination } from '../../composable/usePagination'
 
 
 
-
 export async function GET(req) {
-
-  // await connectDB();
-  // const bankType = await BankTypes.find().sort({ createdAt: -1 });
-  // return NextResponse.json({ bankType });
-
   await connectDB();
 
   const { searchParams } = new URL(req.url);
-  const page = parseInt(searchParams.get('page') || '1');
-  const limit = parseInt(searchParams.get('limit') || '10');
+  const pageParam = searchParams.get('page');
+  const limitParam = searchParams.get('limit');
 
-  const data = await usePagination(BankTypes, {
-    page,
-    limit,
-    sort: { createdAt: -1 },
-  });
+  // If page and limit are provided, use pagination
+  if (pageParam && limitParam) {
+    const page = parseInt(pageParam, 10);
+    const limit = parseInt(limitParam, 10);
 
-  return NextResponse.json(data);
+    const data = await usePagination(BankTypes, {
+      page,
+      limit,
+      sort: { createdAt: -1 },
+    });
 
+    return NextResponse.json(data);
+  }
+
+  // Otherwise, return all bank types sorted by createdAt
+  const results = await BankTypes.find().sort({ createdAt: -1 });
+  return NextResponse.json({ results });
 }
 
 
